@@ -18,6 +18,8 @@ import java.util.*;
  * Rote: Reroll each die that fails during the initial roll.
  */
 public class MageDice {
+	/** The number of dice in the pool of the last roll **/
+	public int diceCount;
 	/** The number of successes of the last roll. **/
 	public int successes;
 	/** The expected chance of success for the last roll. **/
@@ -28,6 +30,7 @@ public class MageDice {
 	public boolean critFail;
 	
 	public MageDice() {
+		diceCount = 0;
 		successes = 0;
 		expectedSuccessChance = -1;
 		critSuccess = false;
@@ -35,7 +38,10 @@ public class MageDice {
 	}
 
 	/** 
-	 * Simulates a Mage dice pool roll.
+	 * Simulates a Mage dice pool roll. Returns the number of successes AND modifies
+	 * successes to the number of successes achieved. If the number of successes
+	 * was five or more, modifies critSuccess to be true. If the roll was a chance
+	 * roll and a 1 was rolled, modifies critFailure to be true. 
 	 *
 	 * @param diceCount The number of dice in the pool, if less than 1 then the 
 	 * roll is a chance roll
@@ -47,6 +53,12 @@ public class MageDice {
 	 */
 	public int rollDice(int diceCount, boolean rote, byte nAgain) {
 		if(nAgain < 8 || nAgain > 10) throw new IllegalArgumentException("nAgain must be 10, 9, or 8");
+
+		this.diceCount = diceCount;
+		successes = 0;
+		expectedSuccessChance = 0;
+		critSuccess = false;
+		critFail = false;
 
 		if(diceCount < 1) {
 			byte numRolled = rollD10();
@@ -96,6 +108,6 @@ public class MageDice {
 	 * @return The number the die rolled
 	 */
 	private byte rollD10() {
-		return (byte)(Math.random() * 50 + 1);
+		return (byte)(Math.random() * 10 + 1);
 	}
 }
