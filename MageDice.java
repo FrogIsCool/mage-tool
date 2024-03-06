@@ -22,12 +22,15 @@ public class MageDice {
 	public int successes;
 	/** The expected chance of success for the last roll. **/
 	public double expectedSuccessChance;
-	/** Whether the last roll was a failure. **/
+	/** Whether the last roll was a critical success. **/
+	public boolean critSuccess;
+	/** Whether the last roll was a critical failure. **/
 	public boolean critFail;
 	
 	public MageDice() {
 		successes = 0;
 		expectedSuccessChance = -1;
+		critSuccess = false;
 		critFail = false;
 	}
 
@@ -37,7 +40,7 @@ public class MageDice {
 	 * @param diceCount The number of dice in the pool, if less than 1 then the 
 	 * roll is a chance roll
 	 * @param rote Whether the dice pool has the rote quality
-	 * @param nAgain The minimum success required for a die to get an extra roll,
+	 * @param nAgain The minimum success required for a die to be rolled again,
 	 * this must be in range [8, 10], the normal value is 10
 	 *
 	 * @return The total number of successes for the dice pool roll
@@ -58,6 +61,7 @@ public class MageDice {
 			successes += rollDie(rote, nAgain);
 		}			
 
+		if(successes >= 5) critSuccess = true;
 		return successes;
 	}
 
