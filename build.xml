@@ -1,0 +1,22 @@
+<project>
+    <target name="clean">
+        <delete dir="bin" />
+    </target>
+
+    <target name="compile" depends="clean">
+        <mkdir dir="bin" />
+        <javac srcdir="src" destdir="bin" includeantruntime="false"/>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar destfile="MageTool.jar" basedir="bin">
+            <manifest>
+				<attribute name="Main-Class" value="MageTool" />
+            </manifest>
+        </jar>
+    </target>
+
+	<target name="run">
+        <java jar="MageTool.jar" fork="true" />
+    </target>
+</project>
