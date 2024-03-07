@@ -18,96 +18,96 @@ import java.util.*;
  * Rote: Reroll each die that fails during the initial roll.
  */
 public class MageDice {
-	/** The number of dice in the pool of the last roll **/
-	public int diceCount;
-	/** The number of successes of the last roll. **/
-	public int successes;
-	/** The expected chance of success for the last roll. **/
-	public double expectedSuccessChance;
-	/** Whether the last roll was a critical success. **/
-	public boolean critSuccess;
-	/** Whether the last roll was a critical failure. **/
-	public boolean critFail;
-	
-	public MageDice() {
-		diceCount = 0;
-		successes = 0;
-		expectedSuccessChance = -1;
-		critSuccess = false;
-		critFail = false;
-	}
+    /** The number of dice in the pool of the last roll **/
+    public int diceCount;
+    /** The number of successes of the last roll. **/
+    public int successes;
+    /** The expected chance of success for the last roll. **/
+    public double expectedSuccessChance;
+    /** Whether the last roll was a critical success. **/
+    public boolean critSuccess;
+    /** Whether the last roll was a critical failure. **/
+    public boolean critFail;
+    
+    public MageDice() {
+        diceCount = 0;
+        successes = 0;
+        expectedSuccessChance = -1;
+        critSuccess = false;
+        critFail = false;
+    }
 
-	/** 
-	 * Simulates a Mage dice pool roll. Returns the number of successes AND modifies
-	 * successes to the number of successes achieved. If the number of successes
-	 * was five or more, modifies critSuccess to be true. If the roll was a chance
-	 * roll and a 1 was rolled, modifies critFailure to be true. 
-	 *
-	 * @param diceCount The number of dice in the pool, if less than 1 then the 
-	 * roll is a chance roll
-	 * @param rote Whether the dice pool has the rote quality
-	 * @param nAgain The minimum success required for a die to be rolled again,
-	 * this must be in range [8, 10], the normal value is 10
-	 *
-	 * @return The total number of successes for the dice pool roll
-	 */
-	public int rollDice(int diceCount, boolean rote, byte nAgain) {
-		if(nAgain < 8 || nAgain > 10) throw new IllegalArgumentException("nAgain must be 10, 9, or 8");
+    /** 
+     * Simulates a Mage dice pool roll. Returns the number of successes AND modifies
+     * successes to the number of successes achieved. If the number of successes
+     * was five or more, modifies critSuccess to be true. If the roll was a chance
+     * roll and a 1 was rolled, modifies critFailure to be true. 
+     *
+     * @param diceCount The number of dice in the pool, if less than 1 then the 
+     * roll is a chance roll
+     * @param rote Whether the dice pool has the rote quality
+     * @param nAgain The minimum success required for a die to be rolled again,
+     * this must be in range [8, 10], the normal value is 10
+     *
+     * @return The total number of successes for the dice pool roll
+     */
+    public int rollDice(int diceCount, boolean rote, byte nAgain) {
+        if(nAgain < 8 || nAgain > 10) throw new IllegalArgumentException("nAgain must be 10, 9, or 8");
 
-		this.diceCount = diceCount;
-		successes = 0;
-		expectedSuccessChance = 0;
-		critSuccess = false;
-		critFail = false;
+        this.diceCount = diceCount;
+        successes = 0;
+        expectedSuccessChance = 0;
+        critSuccess = false;
+        critFail = false;
 
-		if(diceCount < 1) {
-			byte numRolled = rollD10();
-			if(numRolled == 10) return 1;
-			if(numRolled == 1) {
-				critFail = true;
-				return 0;
-			}
-		}
-		
-		for(int i = 0; i < diceCount; i++) {
-			successes += rollDie(rote, nAgain);
-		}			
+        if(diceCount < 1) {
+            byte numRolled = rollD10();
+            if(numRolled == 10) return 1;
+            if(numRolled == 1) {
+                critFail = true;
+                return 0;
+            }
+        }
+        
+        for(int i = 0; i < diceCount; i++) {
+            successes += rollDie(rote, nAgain);
+        }           
 
-		if(successes >= 5) critSuccess = true;
-		return successes;
-	}
+        if(successes >= 5) critSuccess = true;
+        return successes;
+    }
 
-	/**
-	 * Simulates the rolling of a single die in a Mage dice pool.
-	 *
-	 * @param rote Whether the dice pool has the rote quality
-	 * @param nAgain The minimum success required for a die to get an extra roll,
-	 * this must be in range [8, 10], the normal value is 10
-	 *
-	 * @return The number of successes from the die
-	 */
-	private int rollDie(boolean rote, byte nAgain) {
-		if(nAgain < 8 || nAgain > 10) throw new IllegalArgumentException("nAgain must be 10, 9, or 8");
+    /**
+     * Simulates the rolling of a single die in a Mage dice pool.
+     *
+     * @param rote Whether the dice pool has the rote quality
+     * @param nAgain The minimum success required for a die to get an extra roll,
+     * this must be in range [8, 10], the normal value is 10
+     *
+     * @return The number of successes from the die
+     */
+    private int rollDie(boolean rote, byte nAgain) {
+        if(nAgain < 8 || nAgain > 10) throw new IllegalArgumentException("nAgain must be 10, 9, or 8");
 
-		int successCount = 0;
-		byte numRolled = rollD10();
+        int successCount = 0;
+        byte numRolled = rollD10();
 
-		if(rote && numRolled < 8) numRolled = rollD10();
-		if(numRolled >= 8) successCount++;
-		while(numRolled >= nAgain) {
-			numRolled = rollD10(); 
-			if(numRolled >= 8) successCount++;
-		}
+        if(rote && numRolled < 8) numRolled = rollD10();
+        if(numRolled >= 8) successCount++;
+        while(numRolled >= nAgain) {
+            numRolled = rollD10(); 
+            if(numRolled >= 8) successCount++;
+        }
 
-		return successCount;
-	}	
+        return successCount;
+    }   
 
-	/**
-	 * Simulates rolling one 10 sided die.
-	 *
-	 * @return The number the die rolled
-	 */
-	private byte rollD10() {
-		return (byte)(Math.random() * 10 + 1);
-	}
+    /**
+     * Simulates rolling one 10 sided die.
+     *
+     * @return The number the die rolled
+     */
+    private byte rollD10() {
+        return (byte)(Math.random() * 10 + 1);
+    }
 }
