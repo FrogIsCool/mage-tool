@@ -32,7 +32,7 @@ public class MageDice {
     public MageDice() {
         diceCount = 0;
         successes = 0;
-        expectedSuccessChance = -1;
+        expectedSuccessChance = 0;
         critSuccess = false;
         critFail = false;
     }
@@ -62,7 +62,10 @@ public class MageDice {
 
         if(diceCount < 1) {
             byte numRolled = rollD10();
-            if(numRolled == 10) return 1;
+            if(numRolled == 10) { 
+                successes = 1;
+                return 1;
+            }
             if(numRolled == 1) {
                 critFail = true;
                 return 0;
