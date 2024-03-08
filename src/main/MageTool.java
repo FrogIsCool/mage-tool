@@ -8,13 +8,14 @@ public class MageTool {
     private static Scanner sysInScnr = new Scanner(System.in);
     /** Dice object for dice rolling functionality. **/
     private static MageDice dice = new MageDice();
-    /** Store the last input taken from the user. **/
-    //private static String input;
 
     /**
-     * Prints to console opening message.
+     * Prints opening message.
      */
     private static void printStartMessage() {
+        System.out.println("MageTool 1.0.0");
+        System.out.println("An app for Mage: The Awakening 2e");
+        System.out.println("Type help or h for available commands\n");
     }
 
     /**
@@ -28,6 +29,9 @@ public class MageTool {
      * Prints a list of commands and what they do.
      */
     private static void printHelpMenu() {
+        System.out.println("MageTool uses the following commands:");
+        System.out.println("\nroll [number of dice] [options]");
+        System.out.println("r: Applies rote quality to roll\n9: Applies 9-Again quality to roll\n8: Applies 8-Again quality to roll");
     }
 
     /**
@@ -51,12 +55,15 @@ public class MageTool {
      *
      * @param rawInput The input from the user for the current iteration
      *
-     * @return True if the input command was not quit 
+     * @return true if the input command was not quit 
      */
     private static boolean doLoopIteration(String rawInput) {
-        System.out.println();
         String[] input = rawInput.toLowerCase().split(" ");
         switch(input[0]) {
+            case "help":
+            case "h":
+                printHelpMenu();
+                break;
             case "roll":
             case "r":
                 doDiceRoll(input);
@@ -120,7 +127,13 @@ public class MageTool {
      * Prints the results of the last dice roll made by the tool.
      */
     private static void printRollResult() {
-        System.out.printf("Rolled %d dice and got %d successes.\n", dice.diceCount, dice.successes);
+        if(dice.diceCount > 0) {
+            System.out.printf("Rolled %d dice and got %d successes.\n", dice.diceCount, dice.successes);
+            if(dice.critSuccess) System.out.println("An exceptional success!");
+        } else {
+            System.out.printf("Rolled a chance die and got %d successes.\n", dice.successes);
+            if(dice.critFail) System.out.println("A dramatic failure!");
+        }
     }
 
     /**
