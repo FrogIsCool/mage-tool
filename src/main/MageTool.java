@@ -132,7 +132,7 @@ public class MageTool {
             if(dice.critSuccess) System.out.println("An exceptional success!");
         } else {
             System.out.printf("Rolled a chance die and got %d successes.\n", dice.successes);
-            if(dice.critFail) System.out.println("A dramatic failure!");
+            if(dice.critFail) System.out.println("Rolled a 1 and got a dramatic failure!");
         }
     }
 
