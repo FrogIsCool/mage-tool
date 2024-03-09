@@ -12,7 +12,10 @@
 
     <target name="compile">
         <mkdir dir="${main.build.dir}"/>
-        <javac srcdir="${main.src.dir}" destdir="${main.build.dir}" includeantruntime="false"/>
+        <javac srcdir="${main.src.dir}" destdir="${main.build.dir}" modulepath="lib" includeantruntime="false">
+            <compilerarg value="--add-modules"/>
+            <compilerarg value="javafx.controls"/>
+        </javac>
     </target>
 
     <target name="test-compile" depends="compile">
@@ -35,7 +38,7 @@
         </junit>
     </target>
   
-    <target name="jar" depends="compile">
+    <target name="jar" depends="test">
         <jar destfile="MageTool.jar" basedir="${main.build.dir}">
             <manifest>
                 <attribute name="Main-Class" value="MageTool" />
