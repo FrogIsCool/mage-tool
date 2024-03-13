@@ -1,5 +1,6 @@
 import java.util.*;
 
+
 /**
  * Main class for Mage Tool. Handles main loop, user input, and printing output.
  */

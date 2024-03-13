@@ -41,8 +41,15 @@
     <target name="jar" depends="test">
         <jar destfile="MageTool.jar" basedir="${main.build.dir}">
             <manifest>
-                <attribute name="Main-Class" value="MageTool" />
+                <attribute name="Main-Class" value="MageToolGUI" />
             </manifest>
         </jar>
+    </target>
+
+    <target name="run" depends="jar">
+        <java jar="MageTool.jar" modulepath="lib" fork="true">
+            <jvmarg value="--add-modules"/>
+            <jvmarg value="javafx.controls"/>
+        </java>
     </target>
 </project>
