@@ -1,6 +1,3 @@
-lib/
-bin/
-*.class
-MageTool.jar
 *.log
+target/
 
