@@ -22,8 +22,8 @@ public class MageDice {
     public int diceCount;
     /** The number of successes of the last roll. **/
     public int successes;
-    /** The expected chance of success for the last roll. **/
-    public double expectedSuccessChance;
+    /** The probability of rolling the last roll. **/
+    public double lastRollProbability;
     /** Whether the last roll was a critical success. **/
     public boolean critSuccess;
     /** Whether the last roll was a critical failure. **/
@@ -32,16 +32,18 @@ public class MageDice {
     public MageDice() {
         diceCount = 0;
         successes = 0;
-        expectedSuccessChance = 0;
+        lastRollProbability = 0;
         critSuccess = false;
         critFail = false;
     }
 
     /** 
      * Simulates a Mage dice pool roll. Returns the number of successes AND modifies
-     * successes to the number of successes achieved. If the number of successes
-     * was five or more, modifies critSuccess to be true. If the roll was a chance
-     * roll and a 1 was rolled, modifies critFailure to be true. 
+     * successes to the number of successes achieved. Sets diceCount to the number
+     * of dice rolled and lastRollProbability to the chance of rolling the resulting number 
+     * of successes. If the number of successes was five or more, modifies critSuccess 
+     * to be true. If the roll was a chance roll and a 1 was rolled, modifies 
+     * critFailure to be true. 
      *
      * @param diceCount The number of dice in the pool, if less than 1 then the 
      * roll is a chance roll
@@ -56,7 +58,7 @@ public class MageDice {
 
         this.diceCount = diceCount;
         successes = 0;
-        expectedSuccessChance = 0;
+        lastRollProbability = 0;
         critSuccess = false;
         critFail = false;
 
